@@ -1,6 +1,6 @@
 #  Finance Expense Analyzer
 
-A Python project to analyze personal or business expenses from bank CSV files.  
+A Python project to analyze personal or business expenses from bank CSV files.
 It categorizes transactions, calculates monthly statistics, and visualizes spending trends.
 
 ---
@@ -15,7 +15,7 @@ It categorizes transactions, calculates monthly statistics, and visualizes spend
 
 ---
 
-## 📂 Project Structure
+##  Project Structure
 finance-expense-analyzer/
 ├─ data/         # raw and processed CSV files
 ├─ results/      # charts and reports
@@ -25,10 +25,25 @@ finance-expense-analyzer/
 
 ---
 
-## ⚙️ Installation
+##  Installation
 Clone the repository and install dependencies:
 
 ```bash
-git clone https://github.com/<your-username>/finance-expense-analyzer.git
-cd finance-expense-analyzer
+git clone https://github.com/Keobu/finance-analyzer.git
+cd finance-analyzer
 pip install -r requirements.txt
+```
+
+##  Usage
+```bash
+streamlit run app.py
+```
+
+##  Roadmap
+- CSV import with preprocessing
+- Rule-based expense categorization
+- Expense analysis and statistics
+- Visualization with matplotlib/plotly
+- Streamlit dashboard
+- Budget alerts
+- Unit tests and documentation
