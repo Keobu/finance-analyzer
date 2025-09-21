@@ -1,116 +1,99 @@
 # 💰 Finance Expense Analyzer
 
 [![Python](https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Streamlit](https://img.shields.io/badge/Streamlit-ready-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
-[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
-[![Tests](https://img.shields.io/badge/tests-pytest%20✔︎-6DB33F?logo=pytest&logoColor=white)](tests)
+[![Streamlit](https://img.shields.io/badge/Streamlit-dashboard-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
+[![Tests](https://img.shields.io/badge/tests-pytest%20%E2%9C%94%EF%B8%8F-6DB33F?logo=pytest&logoColor=white)](tests)
 [![CI](https://github.com/Keobu/finance-analyzer/actions/workflows/tests.yml/badge.svg)](https://github.com/Keobu/finance-analyzer/actions/workflows/tests.yml)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 
-> Track spending, surface insights, and stay ahead of budget surprises — all in one streamlined dashboard.
+> Track your spending, surface insights, and keep budgets honest with a Streamlit dashboard that feels like an internal finance tool.
 
-## 👋 Why I Built This
-I wanted a finance companion that handles the real-world messiness of bank exports while still feeling polished enough to share with teammates or clients. Finance Expense Analyzer ingests CSV statements, tidies the data, and serves up an interactive Streamlit experience so you can see where every dollar goes and spot budget risks before they escalate.
+## 👋 About the Project
+Finance Expense Analyzer is a Python-first toolkit for cleaning messy bank exports and turning them into actionable insights. Drop in a CSV, let the preprocessing and categorisation pipeline do the heavy lifting, then explore the results through an interactive Streamlit dashboard powered by Plotly visuals.
 
 ## ✨ Features
-- 📥 **CSV import & cleanup** — normalize quirky bank exports and prepare them for analysis automatically.
-- 🧠 **Smart categorization rules** — consistent tagging for recurring merchants and spending groups.
-- 📊 **Rich analytics views** — monthly trends, category heatmaps, and cumulative spend snapshots.
-- 📈 **Interactive Plotly charts** — hover for tooltips, drill into time ranges, and export visuals.
-- 🚨 **Budget alerts** — highlight overspending so you can react instead of react later.
-- 💻 **Streamlit dashboard** — dark theme tabs for Summary, Charts, Budget Alerts, and Raw Data.
-- 📤 **One-click CSV export** — download filtered transactions or curated reports for stakeholders.
+- 📥 **CSV ingestion** – upload or point to raw transaction exports and let the app normalise column names automatically.
+- 🧹 **Preprocessing & validation** – robust error handling for missing files, malformed dates, and quirky encodings.
+- 🏷️ **Smart categorisation** – rule-driven tagging for Groceries, Transport, Housing, Entertainment, and more.
+- 📈 **Expense analytics** – monthly totals, category breakdowns, and an always-on net balance tracker.
+- 📊 **Interactive Plotly charts** – drill into categories or months with responsive pie and bar charts.
+- 🚨 **Budget alerts** – flag overspending before it derails your plan.
+- 🧭 **Streamlit dashboard tabs** – Summary, Charts, Budget Alerts, and Raw Data keep the journey organised.
+- 📤 **Export options** – download curated CSV reports straight from the UI.
+- ✅ **Unit-tested pipeline** – pytest covers preprocessing, categorisation, budgets, visuals, and analytics.
 
 ## 🗂️ Project Structure
 ```text
 finance-analyzer/
 ├─ app.py                  # Streamlit entry point
-├─ requirements.txt        # Python dependencies
+├─ requirements.txt        # Project dependencies
 ├─ data/
-│  ├─ raw/                 # Unmodified sample/imported CSV statements
-│  └─ processed/           # Cleaned datasets ready for analysis
-├─ results/                # Generated reports, charts, and exports
+│  ├─ raw/                 # Input CSVs (includes sample_expenses_large.csv)
+│  └─ processed/           # Cleaned datasets, if you persist them
+├─ docs/
+│  └─ images/              # README screenshots and gallery assets
+├─ results/                # Exported charts (created on demand)
+├─ scripts/
+│  ├─ run_dashboard.py     # Launch Streamlit without the onboarding prompt
+│  └─ generate_gallery_assets.py  # Rebuild screenshots from sample data
 ├─ src/
-│  ├─ __init__.py
-│  ├─ analysis.py          # Spend summaries and metrics calculations
-│  ├─ budget.py            # Budget thresholds and alert logic
-│  ├─ categorize.py        # Rule-based transaction categorization
-│  ├─ config.py            # Central configuration helpers
-│  ├─ exceptions.py        # Custom error types for predictable handling
-│  ├─ init.py              # Data seeding and bootstrap utilities
-│  ├─ preprocessing.py     # Data cleaning, normalization, feature engineering
-│  ├─ utils_io.py          # File loading, validation, and exports
-│  └─ visualization.py     # Plotly chart builders used across the app
-└─ tests/
-   ├─ test_analysis.py
-   ├─ test_categorize.py
-   └─ test_preprocessing.py
+│  ├─ analysis.py          # Metrics: monthly totals, category totals, net balance
+│  ├─ budget.py            # Budget threshold checks & alerts
+│  ├─ categorize.py        # Keyword-driven expense categorisation
+│  ├─ preprocessing.py     # CSV loader, cleaning, validation helpers
+│  ├─ visualization.py     # Plotly chart builders for dashboard + exports
+│  └─ ...                  # Config, IO utilities, exceptions, initialisers
+└─ tests/                  # pytest suite covering the core workflow
 ```
 
-## 🚀 Getting Started
-1. Clone the repository:
+## 🚀 Installation & Usage
+1. **Clone the repository**
    ```bash
    git clone https://github.com/Keobu/finance-analyzer.git
    cd finance-analyzer
    ```
-2. Create and activate a virtual environment:
+2. **Install dependencies** (ideally inside a virtual environment)
    ```bash
    python3 -m venv .venv
    source .venv/bin/activate  # Windows: .venv\Scripts\activate
-   ```
-3. Install dependencies:
-   ```bash
    pip install -r requirements.txt
    ```
-
-## 🧭 Usage
-Run the Streamlit dashboard and follow the on-screen prompts to upload your CSV file.
-```bash
-streamlit run app.py
-```
-The app opens in your browser with four tabs:
-- **Summary** — high-level KPIs and aggregated stats.
-- **Charts** — Plotly visuals (pie, bar, line) with interactive filtering.
-- **Budget Alerts** — overspending callouts and threshold controls.
-- **Raw Data** — searchable, exportable transaction table.
+3. **Run the dashboard**
+   ```bash
+   python3 scripts/run_dashboard.py
+   ```
+   or, if you prefer the classic entry point:
+   ```bash
+   streamlit run app.py
+   ```
+4. Upload your CSV (or start with the bundled `data/raw/sample_expenses_large.csv`) and explore the tabs for summaries, visuals, alerts, and raw data.
 
 ## 📸 Screenshots
-Captured from the sample dataset bundled with the repository.
-
-| Section | Preview |
+| Preview | Description |
 | --- | --- |
-| Dashboard Overview | ![Dashboard preview](docs/images/dashboard-preview.png) |
-| Category Breakdown (Pie) | ![Category pie chart](docs/images/category-pie.png) |
-| Monthly Spend Trend (Bar) | ![Monthly bar chart](docs/images/monthly-bar.png) |
+| ![Dashboard overview](docs/images/summary.png) | Streamlit dashboard summary tab with KPIs & recent metrics |
+| ![Interactive charts](docs/images/charts.png) | Live Plotly visuals for category share and monthly spend |
 
-> Regenerate the gallery after updating the data by running `python3 scripts/generate_gallery_assets.py`.
+> Need updated screenshots? Regenerate them with `python3 scripts/generate_gallery_assets.py` after adjusting the sample data.
 
-## ✅ Testing
-Run the unit test suite with pytest once your virtual environment is active:
+## 🧪 Testing
+Run the full pytest suite (charts render headlessly via Plotly + Kaleido):
 ```bash
-python -m pytest
+MPLCONFIGDIR=$(pwd)/.matplotlib python3 -m pytest
 ```
-Add more tests as you extend categorization rules, preprocessing logic, or dashboard callbacks to keep regressions in check.
+Feel free to add scenario-specific tests as you extend preprocessing rules or dashboard logic.
+
+## 🗃️ Sample CSV
+A ready-to-use dataset lives at `data/raw/sample_expenses_large.csv`. It contains 60 rows of synthetic transactions so you can explore the pipeline without touching production data.
 
 ## 🛣️ Roadmap
-1. **Foundation** — project scaffolding, virtual environment, and data folders.
-2. **Core Engine** — ingestion, preprocessing, and categorization modules.
-3. **Dashboard** — Streamlit UI with multi-tab navigation and Plotly charts.
-4. **UX Polish** — dark theme, interactive controls, CSV export, documentation.
-5. **Testing** — pytest coverage for data pipelines and business logic.
-6. **Deployment** — Streamlit Community Cloud or container-based hosting.
-
-## 🔖 Topics
-`python` · `finance` · `expenses` · `data-analysis` · `streamlit` · `plotly`
-
-## 📄 License
-Released under the [MIT License](LICENSE). Feel free to fork it, customize the pipeline, and share what you build.
+1. Polished documentation with walkthrough videos and tips
+2. Deeper test coverage (property-based checks, budget edge cases)
+3. Deployment recipes (Streamlit Community Cloud, Docker image)
+4. Optional ML-assisted categorisation and anomaly detection
 
 ## 🧷 Badge Ideas
-Consider swapping in the following shields for a more production-ready look:
-- Python version (`https://img.shields.io/badge/python-3.11+-3776AB?logo=python`)
-- Streamlit status (`https://img.shields.io/badge/Streamlit-live-FF4B4B?logo=streamlit`)
-- License (`https://img.shields.io/badge/License-MIT-green`)
-- Test workflow badge from your CI provider (e.g., GitHub Actions status badge)
+When you wire up CI/CD or deployment, consider adding badges for live deployments, coverage, or container images alongside the ones above.
 
----
-If you spin this up for your own budgets, I'd love to hear how you extend the rules or rethink the visuals. Happy analyzing! 🧮
+## 📄 License
+Released under the [MIT License](LICENSE). Use it, extend it, and let me know if you build something cool on top. 🚀
