@@ -1,5 +1,8 @@
 import pandas as pd
 
+from .utils_logging import log_error, log_info
+
+
 class BudgetError(Exception):
     """Raised when budget check cannot be performed."""
 
@@ -20,6 +23,25 @@ def check_budget(df: pd.DataFrame, budget_dict: dict) -> list[str]:
         raise BudgetError("Missing required columns: category or amount")
     if not budget_dict:
         raise BudgetError("Budget dictionary is empty or None.")
+
+    invalid_entries: dict[str, object] = {}
+    for category, budget in budget_dict.items():
+        if not isinstance(budget, (int, float)):
+            invalid_entries[category] = budget
+            continue
+        if budget < 0:
+            invalid_entries[category] = budget
+
+    if invalid_entries:
+        message = (
+            "Budget values must be non-negative numbers. Invalid entries: "
+            f"{invalid_entries}"
+        )
+        log_error(message)
+        raise BudgetError(message)
+
+    categories = ", ".join(sorted(budget_dict.keys()))
+    log_info(f"Checking budgets for categories: {categories}")
 
     alerts = []
     totals = df.groupby("category")["amount"].sum()

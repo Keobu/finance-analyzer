@@ -77,11 +77,31 @@ finance-analyzer/
 > Need updated screenshots? Regenerate them with `python3 scripts/generate_gallery_assets.py` after adjusting the sample data.
 
 ## 🧪 Testing
-Run the full pytest suite (charts render headlessly via Plotly + Kaleido):
+Run the full test suite (verbose output) with:
 ```bash
-MPLCONFIGDIR=$(pwd)/.matplotlib python3 -m pytest
+pytest -v
 ```
-Feel free to add scenario-specific tests as you extend preprocessing rules or dashboard logic.
+Add `-ra` to surface the reason for any skipped tests:
+```bash
+pytest -v -ra
+```
+
+| Result | Details |
+| --- | --- |
+| ✅ Passed | 22 tests covering preprocessing, categorisation, budgets, analysis, and visuals |
+| ⚠️ Skipped | 2 Plotly export tests that require Kaleido for static image generation |
+
+To enable the skipped image-export tests, install Kaleido and rerun:
+```bash
+pip install -U kaleido
+pytest -v
+```
+
+Want coverage numbers? Install `pytest-cov` and run:
+```bash
+pytest --cov=src --cov-report=term-missing
+```
+Feel free to extend the suite as you evolve preprocessing rules or dashboard behaviour.
 
 ## 🗃️ Sample CSV
 A ready-to-use dataset lives at `data/raw/sample_expenses_large.csv`. It contains 60 rows of synthetic transactions so you can explore the pipeline without touching production data.

@@ -13,9 +13,19 @@ from plotly.io import write_image
 try:
     # Attempting to render static images requires the kaleido engine.
     import kaleido  # noqa: F401
+
     _KALEIDO_AVAILABLE = True
 except ImportError:
     _KALEIDO_AVAILABLE = False
+
+if _KALEIDO_AVAILABLE:
+    try:
+        _test_fig = px.scatter(x=[0], y=[0])
+        _test_path = RESULTS_DIR / "__kaleido_probe__.png"
+        write_image(_test_fig, _test_path)
+        _test_path.unlink(missing_ok=True)
+    except Exception:
+        _KALEIDO_AVAILABLE = False
 
 class VisualizationError(Exception):
     """Raised when visualization cannot be generated."""
