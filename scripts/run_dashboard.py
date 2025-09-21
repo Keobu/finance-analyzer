@@ -1,8 +1,9 @@
-"""Launch the Streamlit dashboard without the onboarding prompt."""
+"""Launch the Streamlit dashboard via a subprocess for local use."""
 
 from __future__ import annotations
 
-import pathlib
+import os
+import subprocess
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -11,30 +12,33 @@ CONFIG_PATH = CONFIG_DIR / "config.toml"
 CREDENTIALS_PATH = CONFIG_DIR / "credentials.toml"
 
 
-def prepare_streamlit_home() -> None:
-    """Ensure Streamlit uses the project-local config directory."""
+def prepare_environment() -> dict[str, str]:
+    """Prepare environment variables and config files before launching Streamlit."""
     CONFIG_DIR.mkdir(parents=True, exist_ok=True)
     if not CONFIG_PATH.exists():
         CONFIG_PATH.write_text("[browser]\ngatherUsageStats = false\n")
     if not CREDENTIALS_PATH.exists():
         CREDENTIALS_PATH.write_text("[general]\nemail = \"\"\n")
 
-    # Monkey-patch Path.home so Streamlit stores credentials within the repo.
-    pathlib.Path.home = classmethod(lambda cls: ROOT)  # type: ignore[assignment]
+    env = os.environ.copy()
+    env.setdefault("STREAMLIT_CONFIG_DIR", str(CONFIG_DIR))
+    env.setdefault("STREAMLIT_BROWSER_GATHER_USAGE_STATS", "false")
+    env.setdefault("STREAMLIT_SUPPRESS_EMAIL_PROMPT", "true")
+    env.setdefault("HOME", str(ROOT))
+    return env
 
 
 def main() -> None:
-    prepare_streamlit_home()
-
-    from streamlit.web import bootstrap
-
-    flag_options = {
-        "server.headless": False,
-        "browser.gatherUsageStats": False,
-    }
+    env = prepare_environment()
+    cmd = [
+        "streamlit",
+        "run",
+        str(ROOT / "app.py"),
+        "--browser.gatherUsageStats=false",
+    ]
 
     try:
-        bootstrap.run(str(ROOT / "app.py"), False, [], flag_options)
+        subprocess.run(cmd, check=True, env=env)
     except KeyboardInterrupt:
         pass
 
