@@ -1,0 +1,8 @@
+-r requirements.txt
+
+numpy
+scikit-learn
+seaborn
+joblib
+pytest
+pytest-cov
