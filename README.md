@@ -1,6 +1,6 @@
 # 💰 Finance Expense Analyzer
 
-[![Python](https://img.shields.io/badge/python-3.11+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Python](https://img.shields.io/badge/python-3.13+-3776AB?logo=python&logoColor=white)](https://www.python.org/)
 [![Streamlit](https://img.shields.io/badge/Streamlit-dashboard-FF4B4B?logo=streamlit&logoColor=white)](https://streamlit.io/)
 [![Tests](https://img.shields.io/badge/tests-pytest%20%E2%9C%94%EF%B8%8F-6DB33F?logo=pytest&logoColor=white)](tests)
 [![CI](https://github.com/Keobu/finance-analyzer/actions/workflows/tests.yml/badge.svg)](https://github.com/Keobu/finance-analyzer/actions/workflows/tests.yml)
