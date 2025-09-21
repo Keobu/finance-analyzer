@@ -64,11 +64,11 @@ if uploaded_file is not None:
             st.subheader("📈 Charts")
             col1, col2 = st.columns(2)
             with col1:
-                path = plot_expenses_by_category(df)
-                st.image(str(path))
+                fig = plot_expenses_by_category(df)
+                st.plotly_chart(fig, use_container_width=True)
             with col2:
-                path = plot_monthly_trend(df)
-                st.image(str(path))
+                fig = plot_monthly_trend(df)
+                st.plotly_chart(fig, use_container_width=True)
 
         # --- Tab 3: Budget Alerts
         with tab3:

@@ -1,12 +1,40 @@
-"""Budget monitoring helpers."""
-
-from __future__ import annotations
-
 import pandas as pd
 
+class BudgetError(Exception):
+    """Raised when budget check cannot be performed."""
 
-def calculate_overages(df: pd.DataFrame, monthly_budget: float) -> pd.Series:
-    """Return spending overages relative to a monthly budget."""
-    monthly_totals = df.groupby("month")[["total_spent"]].sum()
-    overages = monthly_totals["total_spent"] - monthly_budget
-    return overages.clip(lower=0)
+def check_budget(df: pd.DataFrame, budget_dict: dict) -> list[str]:
+    """
+    Check if expenses exceed category budgets.
+
+    Args:
+        df (pd.DataFrame): DataFrame with at least ["category", "amount"]
+        budget_dict (dict): e.g. {"Groceries": 300, "Transport": 100}
+
+    Returns:
+        list of alert strings
+    """
+    if df is None or df.empty:
+        raise BudgetError("Input DataFrame is empty or None.")
+    if "category" not in df.columns or "amount" not in df.columns:
+        raise BudgetError("Missing required columns: category or amount")
+    if not budget_dict:
+        raise BudgetError("Budget dictionary is empty or None.")
+
+    alerts = []
+    totals = df.groupby("category")["amount"].sum()
+
+    for category, budget in budget_dict.items():
+        spent = totals.get(category, 0)
+        # spent is negative if expenses are stored as negatives → take abs()
+        spent_abs = abs(spent)
+        if spent_abs > budget:
+            alerts.append(
+                f"⚠️ {category} exceeded budget: {spent_abs:.2f}€ / {budget:.2f}€"
+            )
+        else:
+            alerts.append(
+                f"✅ {category}: {spent_abs:.2f}€ / {budget:.2f}€ (within budget)"
+            )
+
+    return alerts

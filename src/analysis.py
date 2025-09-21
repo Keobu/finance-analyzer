@@ -45,4 +45,4 @@ def net_balance(df: pd.DataFrame) -> float:
     if "amount" not in df.columns:
         raise AnalysisError("Missing required column: amount")
 
-    return df["amount"].sum()
+    return float(df["amount"].sum())

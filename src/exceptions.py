@@ -1,9 +1,8 @@
-"""Custom exceptions for the Finance Expense Analyzer."""
+class DatasetNotFoundError(Exception):
+    """Raise when a dataset cannot be found."""
 
+class EmptyDatasetError(Exception):
+    """Raise when an input is empty or invalid."""
 
-class FinanceAnalyzerError(Exception):
-    """Base exception for the Finance Expense Analyzer."""
-
-
-class DataValidationError(FinanceAnalyzerError):
-    """Raised when input data fails validation checks."""
+class ModelNotFoundError(Exception):
+    """Raise when a model file cannot be found."""
